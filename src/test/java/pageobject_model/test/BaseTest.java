@@ -1,7 +1,5 @@
 package pageobject_model.test;
 
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -16,13 +14,17 @@ import java.util.concurrent.TimeUnit;
 public abstract class BaseTest extends MainClass {
 
     @BeforeClass(alwaysRun = true)
-    public void setUp() throws InterruptedException, MalformedURLException {
-//        super.driver = new ChromeDriver();
+    public void setUp() throws InterruptedException {
         DesiredCapabilities capabilities = new DesiredCapabilities();
+        // FirefoxOptions options = new FirefoxOptions();
         ChromeOptions options = new ChromeOptions();
         options.merge(capabilities);
-        String huburl = "http://localhost:4444/wd/hub";
-        super.driver = new RemoteWebDriver(new URL(huburl), options);
+        String hubUrl = "http://localhost:4444/wd/hub";
+        try {
+            super.driver = new RemoteWebDriver(new URL(hubUrl), options);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         new CloudGoogleHomePage(driver).openPage();
         new CloudGoogleProductsPage(driver).openPage();
