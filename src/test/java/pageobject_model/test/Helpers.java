@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit;
 public class Helpers extends MainClass {
 
     public static void waitUntilClickable(String locator, WebDriver driver) {
-        new WebDriverWait(driver, 5)
+        new WebDriverWait(driver, 10)
                 .until(ExpectedConditions
                         .elementToBeClickable(By.xpath(locator)));
     }

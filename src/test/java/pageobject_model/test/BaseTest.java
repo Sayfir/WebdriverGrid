@@ -1,17 +1,28 @@
 package pageobject_model.test;
 
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import pageobject_model.page.*;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
 public abstract class BaseTest extends MainClass {
 
     @BeforeClass(alwaysRun = true)
-    public void setUp() throws InterruptedException {
-        super.driver = new ChromeDriver();
+    public void setUp() throws InterruptedException, MalformedURLException {
+//        super.driver = new ChromeDriver();
+        DesiredCapabilities capabilities = new DesiredCapabilities();
+        ChromeOptions options = new ChromeOptions();
+        options.merge(capabilities);
+        String huburl = "http://localhost:4444/wd/hub";
+        super.driver = new RemoteWebDriver(new URL(huburl), options);
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         new CloudGoogleHomePage(driver).openPage();
         new CloudGoogleProductsPage(driver).openPage();

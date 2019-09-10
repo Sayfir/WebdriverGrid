@@ -115,7 +115,7 @@ public class CloudGoogleCalculatorPage extends BasePage {
 
     public CloudGoogleCalculatorPage chooseGpuType() {
         Helpers.choosingElementFromDropdown(driver, "//md-select[@placeholder='GPU type']/md-select-value", gpuTypeDropdown,
-                "//*[@value='NVIDIA_TESLA_V100']", gpuNumberDropdownElement);
+                "//*[@value='NVIDIA_TESLA_V100']", gpuTypeDropdownElement);
         return this;
     }
 
