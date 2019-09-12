@@ -7,14 +7,16 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import pageobject_model.page.*;
 
+import java.awt.*;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
-public abstract class BaseTest extends MainClass {
+public abstract class BaseTest extends DriverContainer {
 
     @BeforeClass(alwaysRun = true)
-    public void setUp() throws InterruptedException {
+    public void setUp() throws InterruptedException, AWTException, IOException {
         DesiredCapabilities capabilities = new DesiredCapabilities();
         // FirefoxOptions options = new FirefoxOptions();
         ChromeOptions options = new ChromeOptions();
