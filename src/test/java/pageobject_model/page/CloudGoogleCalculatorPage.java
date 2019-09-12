@@ -1,12 +1,14 @@
 package pageobject_model.page;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import pageobject_model.test.Helpers;
-
+import java.awt.*;
+import java.io.IOException;
 
 public class CloudGoogleCalculatorPage extends BasePage {
 
@@ -77,7 +79,7 @@ public class CloudGoogleCalculatorPage extends BasePage {
         return this;
     }
 
-    public CloudGoogleCalculatorPage fillForm() throws InterruptedException {
+    public CloudGoogleCalculatorPage fillForm() throws InterruptedException, AWTException, IOException {
         switchToCalculatorPageFrame().fillInstancesNumberField()
                 .chooseMachineType().activateGpuCheckbox()
                 .chooseGpuNumber().chooseGpuType().chooseLocalSsd()
@@ -100,13 +102,17 @@ public class CloudGoogleCalculatorPage extends BasePage {
         return this;
     }
 
-    public CloudGoogleCalculatorPage chooseMachineType() {
+    public CloudGoogleCalculatorPage chooseMachineType() throws AWTException, IOException {
+        WebElement element = driver.findElement(By.xpath("//md-select[@id='select_75']"));
+        JavascriptExecutor javascriptExecutor = (JavascriptExecutor) driver;
+        javascriptExecutor.executeScript("arguments[0].setAttribute('style', 'background: yellow; border: 2px solid red;');", element);
         Helpers.choosingElementFromDropdown(driver, "//md-select[@id='select_75']", machineTypeDropdown,
                 "//md-option[@value='CP-COMPUTEENGINE-VMIMAGE-N1-STANDARD-8']", machineTypeDropdownElement);
         return this;
     }
 
-    public CloudGoogleCalculatorPage chooseGpuNumber() {
+    public CloudGoogleCalculatorPage chooseGpuNumber() throws IOException, AWTException {
+        Helpers.takeScreenshot();
         Helpers.choosingElementFromDropdown(driver, "//md-select[@placeholder='Number of GPUs']/md-select-value",
                 gpuNumberDropdown, "//*[@class='md-select-menu-container md-active md-clickable']//md-option[@value='1']",
                 gpuNumberDropdownElement);
@@ -115,21 +121,22 @@ public class CloudGoogleCalculatorPage extends BasePage {
 
     public CloudGoogleCalculatorPage chooseGpuType() {
         Helpers.choosingElementFromDropdown(driver, "//md-select[@placeholder='GPU type']/md-select-value", gpuTypeDropdown,
-                "//*[@value='NVIDIA_TESLA_V100']", gpuNumberDropdownElement);
+                "//*[@value='NVIDIA_TESLA_V100']", gpuTypeDropdownElement);
         return this;
     }
 
-    public CloudGoogleCalculatorPage chooseLocalSsd() {
+    public CloudGoogleCalculatorPage chooseLocalSsd() throws InterruptedException {
+        Helpers.waitUntilClickable("//md-select[@placeholder='Local SSD']/md-select-value", driver);
         Helpers.choosingElementFromDropdown(driver, "//md-select[@placeholder='Local SSD']/md-select-value", localSsdDropdown,
                 "//div[@class='md-select-menu-container md-active md-clickable']//md-option[@value='2']",
                 getLocalSsdDropdownElement);
         return this;
     }
 
-    public CloudGoogleCalculatorPage chooseDataCenter() {
-        Helpers.choosingElementFromDropdown(driver, "//md-select[@placeholder='Datacenter location']/md-select-value",
-                dataCenterDropdown, "//*[@class='md-select-menu-container md-active md-clickable']//*[@value='europe-west3']",
-                dataCenterDropdownElement);
+    public CloudGoogleCalculatorPage chooseDataCenter() throws InterruptedException {
+        JavascriptExecutor jsExecutor = (JavascriptExecutor) driver;
+        jsExecutor.executeScript("document.getElementById('select_value_label_50').click()");
+        driver.findElement(By.xpath("//*[@class='md-select-menu-container md-active md-clickable']//*[@value='europe-west3']")).click();
         return this;
     }
 
